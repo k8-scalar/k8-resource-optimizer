@@ -8,30 +8,7 @@ The container image contains a binary-only version of k8-resource-optimizer that
 The k8-resource-optimizer must itself be deployed within the k8-cluster. 
 The troubleshooting section is at the end of this description.
 
-### 1. Creating service account for tiller (HELM)
-This assumes you have RBAC enabled on your k8 cluster.
-
-Service account for tiller:
-```
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: tiller
-  namespace: kube-system
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
-metadata:
-  name: tiller-clusterrolebinding
-subjects:
-- kind: ServiceAccount
-  name: tiller
-  namespace: kube-system
-roleRef:
-  kind: ClusterRole
-  name: cluster-admin
-  apiGroup: ""
-```
+### 1. Creating service account for k8-resource-optimizer
 
 Service account for k8-resource-optimizer
 ```
@@ -55,14 +32,10 @@ subjects:
     namespace: default
 ```
 ###  2. Installing HELM
-Install HELM but: **do not run helm init** 
+
 
 link: https://docs.helm.sh/using_helm/#installing-helm 
 
-After installing helm, run: 
-```
-$ helm init --service-account tiller
-```
 ## Deploying K8-resource-optimizer
 The k8-resource-optimizer is deployed within the k8-cluster. This is preferably done on a seperate node.  This can be achieved by the use of labels and node-selectors ([link](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)):
 ```
