@@ -43,31 +43,24 @@ $ kubectl label nodes $MY_NODE nodetype=k8-resource
 ```
 Deploy the tool using the following yaml file:
 ```
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: k8-resource-optimizer
   namespace: default
+  labels:
+    app: k8-resource-optimizer
 spec:
   replicas: 1
   template:
-    metadata:
-      labels:
+    selector:
+      matchLabels:
         app: k8-resource-optimizer
     spec:
       serviceAccountName: k8-resource-optimizer
       containers:
       - name: k8-resource-optimizer
-        image: decomads/k8-resource-optimizer:latest
-        resources:
-          requests:
-            memory: "2048Mi"
-            cpu: "2000m"
-          limits:
-            memory: "2048Mi"
-            cpu: "2000m"
-      nodeSelector:
-        nodetype: k8-resource
+        image: decomads/k8-resource-optimizer:latest      
 ```
 
 # Using the tool
@@ -79,7 +72,7 @@ $ kubectl exec -it <name of Pod> -- bash
 
 $ cd exp
 ```
-Run the binary with a *--help* flag, as the tool expects all it's input as flags.  For example
+Run the binary with a *--help* flag, as the tool exp:ects all it's input as flags.  For example
 ```
 $ ./k8-resource-optimizer --help
 
