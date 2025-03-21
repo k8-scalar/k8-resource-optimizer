@@ -31,10 +31,7 @@ subjects:
     name: k8-resource-optimizer
     namespace: default
 ```
-###  2. Installing HELM
 
-
-link: https://docs.helm.sh/using_helm/#installing-helm 
 
 ## Deploying K8-resource-optimizer
 The k8-resource-optimizer is deployed within the k8-cluster. This is preferably done on a seperate node.  This can be achieved by the use of labels and node-selectors ([link](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/)):
@@ -52,9 +49,12 @@ metadata:
     app: k8-resource-optimizer
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: k8-resource-optimizer
   template:
-    selector:
-      matchLabels:
+    metadata:
+      labels:
         app: k8-resource-optimizer
     spec:
       serviceAccountName: k8-resource-optimizer
