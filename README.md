@@ -205,73 +205,8 @@ func InitializeUtilityFunc(name string) UtilityFunc {
 
 # Troubleshooting
 
-## Incompatible helm client and server versions
-
-The decomads/k8-resource-optimizer image uses the latest version of the helm client. In case you installed an older version of helm in your cluster you will get the following error:
-
-```
-
-2019/09/08 08:53:24             Bench: intalling  1 injected charts
-2019/09/08 08:53:24                     intalling chart 1/1
-2019/09/08 08:53:24                     Helmwrap: installing chart: /tmp/k8-reso urce-optimizer/charts/silver-thesisapp-42538 as release: silver-thesisapp-42538
-2019/09/08 08:53:24 [install /tmp/k8-resource-optimizer/charts/silver-thesisapp- 42538 --name silver-thesisapp-42538 --namespace silver --wait]
-2019/09/08 08:53:25 error in Helmwrap InstallChart: exit status 1, []
-2019/09/08 08:53:25             Bench: Deleting 1 Helm charts
-2019/09/08 08:53:25                     Helmwrap: deleting release: silver-thesi sapp-42538
-2019/09/08 08:53:25 error in Helmwrap DeleteRelease: exit status 1
-```
-When you run `helm list` you will get the following error: 
-```
-root@k8-resource-optimizer-59b9f7c9f8-ndm7c:/# helm list
-Error: incompatible versions client[v2.14.2] server[v2.8.0]
-```
-To resolve the problem, you have to install the older helm client inside the container as follows:
-
-```
-curl -LO https://kubernetes-helm.storage.googleapis.com/helm-v2.8.0-linux-amd64.tar.gz && tar xvzf helm-v2.8.0-linux-amd64.tar.gz && chmod +x ./linux-amd64/helm && mv ./linux-amd64/helm /usr/local/bin/helm
-```
-
-## Enforcing consistency from the Kubernetes scheduler
-In order to ensure that Pods are deployed on the same node across multiple tests,  nodeselectors must again used.  For example to ensure that the worker Pods are always deployed on the same node, perform the following 2 steps
-
-1) the node is labeled as follows:
-```
-$ kubectl label nodes $MY_NODE nodetype=worker
-```
-2) the template of the worker.yaml file inside the helm chart onder 'charts/thesisapp/templates' must be extended with a nodeSelector property
-
-
-```
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: worker
-  namespace: default
-spec:
-  replicas: 1
-  template:
-    metadata:
-      ...
-    spec:
-      ...
-      containers:
-      - name: worker
-        image: ...
-        resources:
-          requests:
-            memory: "..."
-            cpu: "..."
-           ...
-      nodeSelector:
-        nodetype: worker
-```
 # License
-
-Copyright 2018 KU Leuven Research and Development - imec - Distrinet
-
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-Administrative Contact: dnet-project-office@cs.kuleuven.be
-Technical Contact: eddy.truyen@cs.kuleuven.be
