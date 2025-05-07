@@ -268,8 +268,9 @@ To run the same command for 2 iterations, but using results from the previous ru
 root@k8-resource-optimizer-8587d8c7c9-kmj5g:/exp# ./k8-resource-optimizer -c examples/decompositions/teastore.yaml  -e teastore -i 2 -r teastore/results.json
 ```
 
-Now you see that the previous results is taken from the `teastore/results.json` file
+the previous results is taken from the `teastore/results.json` file:
 
+```
 2025/05/07 10:26:10
 2025/05/07 10:26:10 Decomposer loaded dataset containing 1 previously executed benchmarks
 2025/05/07 10:26:10 executing :false
@@ -321,21 +322,8 @@ configsauthCpu  authMemory      dbCpu   dbMemory        imageCpu        imageMem
 2025/05/07 10:27:26             Bench: running experiment of type: TeastoreExperiment
 ```
 
-2025/05/07 10:27:26             Locust: running with parameters: [/tmp/locustwrap/singleRunAndParse.sh /tmp/sockloadtest/scripttemplate.py teastore/1-0/warmup 10 1 120 /tmp/locustwrap/parser.py http://teastore-webui.silver.svc.cluster.local:8080]
-2025/05/07 10:29:27             Locust: running with parameters: [/tmp/locustwrap/singleRunAndParse.sh /tmp/sockloadtest/scripttemplate.py teastore/1-0/results 10 1 240 /tmp/locustwrap/parser.py http://teastore-webui.silver.svc.cluster.local:8080]
-2025/05/07 10:33:27             Bench: Deleting 1 Helm charts
-2025/05/07 10:33:27                     Helmwrap: deleting release: silver-teastore-58690
-2025/05/07 10:34:00             Bench: Deleted 1 Helm charts
-2025/05/07 10:34:00             Processing results of sample: 1/1
-2025/05/07 10:34:00 slisDist.Amount == 1657, slisRequests.Failures 656,out 11000
-2025/05/07 10:34:00 teastore  SLO: req: 1000 got: 11000
-2025/05/07 10:34:00 slisDist.Amount == 1657, slisRequests.Failures 656,out 11000
-2025/05/07 10:34:00
-configsauthCpu  authMemory      dbCpu   dbMemory        imageCpu        imageMemory     persistenceCpu  persistenceMemory       recommenderCpu  recommenderMemory       registryCpu     registryMemory  webuiCpu webuiMemory      score
-0       875     896     625     1024    1000    768     1000    896     500     768     875     896     1125    1152    -11
-2025/05/07 10:34:00 writing report to teastore/report.csv...
-```
 
+You can add other helm charts for teastore under the directory `exp/examples/charts` using a Dockerfile that uses the `decomads/k8-resource-optimizer:latest` image. 
 
 # License
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
